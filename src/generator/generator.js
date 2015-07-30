@@ -18,8 +18,9 @@
         };
         c.calc = function () {
             var sum = function (arr) { return _.reduce(arr, function (a, i) { return a + i; }, 0); }
-            var calcFunc = function (funcName) { return sum(_.map(c.config, function (i) { return c.calcMod(c.configData[i.block][funcName], i.quantity); }));   }
+            var calcFunc = function (funcName) { return sum(_.map(c.config, function (i) { return c.calcMod(c.configData[i.block][funcName], i.quantity); })); }
             
+            var blocksUsed = sum(_.map(c.config, function (i) { return i.quantity; }));
             var speed = calcFunc('speedFunction');
             var eff = calcFunc('efficiencyFunction');
             var mult = calcFunc('multiplicityFunction') + 1;
@@ -32,12 +33,27 @@
                 mult: mult,
                 rfTick: rfTick,
                 tickMod: tickMod,
-                rfPerCoal: rfPerCoal 
+                rfPerCoal: rfPerCoal,
+                blocksUsed: blocksUsed
             };
         };
         
+        var allCubes = [];
+        var maxSize = 20;
+        for (var i = 1; i < maxSize; i++) {
+            for (var j = 1; j <= i; j++) {
+                for (var k = 1; k <= j; k++) {
+                    allCubes.push({ size: (i + 2) + 'x' + (j + 2) + 'x' + (i + 2), blocks: (i + 2) * (j + 2) * (k + 2) - i * j * k });
+                } 
+            } 
+        } 
+        allCubes.sort(function (a, b) { return a.blocks - b.blocks; });
+        
         $scope.$watch('c.config', function () {
             c.calcResult = c.calc();
+            
+            var targetIx = _.sortedIndex(allCubes, { blocks: c.calcResult.blocksUsed }, 'blocks');
+            c.cubes = allCubes.slice(Math.max(0, targetIx - 3), targetIx + 5);
         }, true);
         
     }]);

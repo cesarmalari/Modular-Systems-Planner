@@ -31,13 +31,56 @@
 	</div>
 	<div class="col-lg-4">
 		<h3>Result:</h3>
-		<div class="form">
-			<div class="form-group"><label>Speed modifier</label><span class="form-control">{{ c.calcResult.speed }}</span></div>
-			<div class="form-group"><label>Efficiency modifier</label><span class="form-control">{{ c.calcResult.eff }}</span></div>
-			<div class="form-group"><label>Multipler</label><span class="form-control">{{ c.calcResult.mult }}</span></div>
-			<div class="form-group"><label>RF/tick</label><span class="form-control">{{ c.calcResult.rfTick }}</span></div>
-			<div class="form-group"><label>Tick modifier</label><span class="form-control">{{ c.calcResult.tickMod }}</span></div>
-			<div class="form-group"><label>RF/Coal</label><span class="form-control">{{ c.calcResult.rfPerCoal }}</span></div>
+		<div class="form form-horizontal">
+			<div class="form-group">
+				<label class="col-md-6 control-label">Speed modifier</label>
+				<div class="col-md-6">
+					<span class="form-control">{{ c.calcResult.speed }}</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-6 control-label">Efficiency modifier</label>
+				<div class="col-md-6">
+					<span class="form-control">{{ c.calcResult.eff }}</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-6 control-label">Multipler</label>
+				<div class="col-md-6">
+					<span class="form-control">{{ c.calcResult.mult }}</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-6 control-label">RF/tick</label>
+				<div class="col-md-6">
+					<span class="form-control">{{ c.calcResult.rfTick }}</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-6 control-label">Tick modifier</label>
+				<div class="col-md-6">
+					<span class="form-control">{{ c.calcResult.tickMod }}</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-6 control-label">RF/Coal</label>
+				<div class="col-md-6">
+					<span class="form-control">{{ c.calcResult.rfPerCoal }}</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-6 control-label">Blocks used</label>
+				<div class="col-md-6">
+					<span class="form-control">{{ c.calcResult.blocksUsed }}</span>
+				</div>
+			</div>
+			<hr/>
+			<div class="form-group" ng-repeat="cb in c.cubes">
+				<label class="col-md-8 control-label">Cube of size {{cb.size}}</label>
+				<div class="col-md-4">
+					<span class="form-control" ng-style="{ color: cb.blocks >= c.calcResult.blocksUsed ? 'green' : 'red', 'font-weight': cb.blocks == c.calcResult.blocksUsed ? 'bold' : 'normal'}">{{cb.blocks}}</span>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
