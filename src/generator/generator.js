@@ -1,7 +1,7 @@
 (function() {
     'use strict;'
 
-    angular.module('app').controller('GeneratorController', ['$http', function ($http) {
+    angular.module('app').controller('GeneratorController', ['$http', '$scope', function ($http, $scope) {
         var c = this;
         
         c.configData = null;
@@ -12,6 +12,33 @@
                 c.config.push({ block: key, quantity: 0 });
             }
         });
+        
+        c.calcMod = function (fn, qty) {
+            return qty == 0 ? 0 : Math.max(fn.floor, Math.min(fn.ceiling, ((fn.scaleFactorNumerator / fn.scaleFactorDenominator) * (Math.pow((qty + fn.xOffset), fn.power))) + fn.yOffset));
+        };
+        c.calc = function () {
+            var sum = function (arr) { return _.reduce(arr, function (a, i) { return a + i; }, 0); }
+            var calcFunc = function (funcName) { return sum(_.map(c.config, function (i) { return c.calcMod(c.configData[i.block][funcName], i.quantity); }));   }
+            
+            var speed = calcFunc('speedFunction');
+            var eff = calcFunc('efficiencyFunction');
+            var mult = calcFunc('multiplicityFunction') + 1;
+            var rfTick = (8 * mult * -1 * speed);
+            var tickMod = (1600 + eff) / 1600;
+            var rfPerCoal = rfTick * (1600 * tickMod) / 3;
+            return {
+                speed: speed,
+                eff: eff,
+                mult: mult,
+                rfTick: rfTick,
+                tickMod: tickMod,
+                rfPerCoal: rfPerCoal 
+            };
+        };
+        
+        $scope.$watch('c.config', function () {
+            c.calcResult = c.calc();
+        }, true);
         
     }]);
 })();
