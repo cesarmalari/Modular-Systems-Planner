@@ -25,8 +25,8 @@
             var eff = calcFunc('efficiencyFunction');
             var mult = calcFunc('multiplicityFunction') + 1;
             var rfTick = (8 * mult * -1 * speed);
-            var tickMod = (1600 + eff) / 1600;
-            var rfPerCoal = rfTick * (1600 * tickMod) / 3;
+            var tickMod = (1600 + eff) / 1600 / mult;
+            var rfPerCoal = Math.max(0, rfTick) * (1600 * tickMod) / 3;
             return {
                 speed: speed,
                 eff: eff,
