@@ -29,6 +29,7 @@ var concat = require('gulp-concat');
 var ngAnnotate = require('gulp-ng-annotate');
 var uglify = require('gulp-uglify');
 var minifyCss = require('gulp-minify-css');
+var ghPages = require('gulp-gh-pages');
 
 var RESOURCE_SOURCE = 'src/resources/**';
 var JS_SCRIPT_SOURCE = 'src/**/*.js';
@@ -200,14 +201,14 @@ gulp.task('index', ['scripts', 'styles', 'templates', 'resources'], function() {
     return gulp.src(INDEX_SOURCE)
         .pipe(plumber())
         .pipe(wiredep.stream())
-        .pipe(inject(gulp.src(['dist/scripts/**/*.js', 'dist/styles/**/*.css'], { read: false}), { ignorePath: 'dist' }))
+        .pipe(inject(gulp.src(['dist/scripts/**/*.js', 'dist/styles/**/*.css'], { read: false}), { ignorePath: 'dist', addRootSlash: false }))
         .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('index-release', ['scripts-release', 'styles-release', 'resources'], function() {
     return gulp.src(INDEX_SOURCE)
         .pipe(plumber())
-        .pipe(inject(gulp.src(['dist/scripts/**/scripts-*.js', 'dist/styles/**/styles-*.css'], { read: false}), { ignorePath: 'dist' }))
+        .pipe(inject(gulp.src(['dist/scripts/**/scripts-*.js', 'dist/styles/**/styles-*.css'], { read: false}), { ignorePath: 'dist', addRootSlash: false }))
         .pipe(gulp.dest('./dist'));
 });
 
@@ -264,4 +265,8 @@ gulp.task('default', function(callback) {
 });
 gulp.task('release', function(callback) {
     return runSequence('clean', 'open-release', callback);
+});
+gulp.task('deploy', ['clean', 'index-release'], function() {
+    return gulp.src('./dist/**/*')
+        .pipe(ghPages({ push: false }));
 });
