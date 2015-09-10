@@ -40,11 +40,11 @@
     },
     "efficiencyFunction": {
       "scaleFactorNumerator": -1.0,
-      "scaleFactorDenominator": 1.0,
-      "xOffset": 0.0,
+      "scaleFactorDenominator": 5.0,
+      "xOffset": 7.0,
       "power": 3.0,
       "yOffset": 0.0,
-      "floor": -100.0,
+      "floor": -500.0,
       "ceiling": 0.0
     },
     "multiplicityFunction": {
