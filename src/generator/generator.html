@@ -7,14 +7,15 @@
 				<tr>
 					<th>Block</th>
 					<th>Quantity</th>
-					<th>Speed Modifier</th>
-					<th>Efficiency Modifier</th>
+					<th>Speed<br/>Modifier</th>
+					<th>Efficiency<br/>Modifier</th>
 					<th>Multiplier</th>
+					<th>Effect of 1 more</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr ng-repeat="l in c.config">
-					<td>{{ l.block }}</td>
+					<td>{{ c.blockExtraInfo[l.block] ? c.blockExtraInfo[l.block].name : l.block  }}</td>
 					<td>
 						<input type="number" ng-model="l.quantity" style="width: 50px; text-align: right;" min="0"/>
 						<!--
@@ -22,9 +23,23 @@
 						<button class="btn" ng-click="l.quantity = l.quantity + 1"><span class="glyphicon glyphicon-plus"></span></button>
 						-->
 					</td>
-					<td>{{ c.calcMod(c.configData[l.block].speedFunction, l.quantity) }}</td>
-					<td>{{ c.calcMod(c.configData[l.block].efficiencyFunction, l.quantity) }}</td>
-					<td>{{ c.calcMod(c.configData[l.block].multiplicityFunction, l.quantity) }}</td>
+					<td>{{ c.calcMod(c.configData[l.block].speedFunction, l.quantity) | number:2 }}</td>
+					<td>{{ c.calcMod(c.configData[l.block].efficiencyFunction, l.quantity) | number:2 }}</td>
+					<td>{{ c.calcMod(c.configData[l.block].multiplicityFunction, l.quantity) | number:2 }}</td>
+					<td class="effect">
+						<span class="more" ng-if="c.whatIf[l.block].rfTick > c.calcResult.rfTick"><span class="glyphicon glyphicon-plus"></span> 
+							{{ (c.whatIf[l.block].rfTick - c.calcResult.rfTick) | number:0 }} More RF/tick
+						</span>
+						<span class="less" ng-if="c.whatIf[l.block].rfTick < c.calcResult.rfTick"><span class="glyphicon glyphicon-minus"></span> 
+							{{ (c.calcResult.rfTick - c.whatIf[l.block].rfTick) | number:0 }} Less RF/tick
+						</span>
+						<span class="more" ng-if="c.whatIf[l.block].rfPerCoal > c.calcResult.rfPerCoal"><span class="glyphicon glyphicon-plus"></span> 
+							{{ (c.whatIf[l.block].rfPerCoal - c.calcResult.rfPerCoal) | number:0 }} More RF/Coal
+						</span>
+						<span class="less" ng-if="c.whatIf[l.block].rfPerCoal < c.calcResult.rfPerCoal"><span class="glyphicon glyphicon-minus"></span> 
+							{{ (c.calcResult.rfPerCoal - c.whatIf[l.block].rfPerCoal) | number:0 }} Less RF/Coal
+						</span>
+					</td>
 				</tr>
 			</tbody>
 		</table>
@@ -35,37 +50,37 @@
 			<div class="form-group">
 				<label class="col-md-6 control-label">Speed modifier</label>
 				<div class="col-md-6">
-					<span class="form-control">{{ c.calcResult.speed }}</span>
+					<span class="form-control">{{ c.calcResult.speed | number:2 }}</span>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-md-6 control-label">Efficiency modifier</label>
 				<div class="col-md-6">
-					<span class="form-control">{{ c.calcResult.eff }}</span>
+					<span class="form-control">{{ c.calcResult.eff | number:2 }}</span>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-md-6 control-label">Multipler</label>
 				<div class="col-md-6">
-					<span class="form-control">{{ c.calcResult.mult }}</span>
+					<span class="form-control">{{ c.calcResult.mult | number:2 }}</span>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-md-6 control-label">RF/tick</label>
 				<div class="col-md-6">
-					<span class="form-control">{{ c.calcResult.rfTick }}</span>
+					<span class="form-control">{{ c.calcResult.rfTick | number:0 }}</span>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-md-6 control-label">Tick modifier</label>
 				<div class="col-md-6">
-					<span class="form-control">{{ c.calcResult.tickMod }}</span>
+					<span class="form-control">{{ c.calcResult.tickMod | number:4 }}</span>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-md-6 control-label">RF/Coal</label>
 				<div class="col-md-6">
-					<span class="form-control">{{ c.calcResult.rfPerCoal }}</span>
+					<span class="form-control">{{ c.calcResult.rfPerCoal | number:0 }}</span>
 				</div>
 			</div>
 			<div class="form-group">
