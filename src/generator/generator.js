@@ -1,7 +1,7 @@
 (function() {
     'use strict;'
 
-    angular.module('app').controller('GeneratorController', ['$http', '$scope', function ($http, $scope) {
+    angular.module('app').controller('GeneratorController', ['$http', '$scope', '$q', function ($http, $scope, $q) {
         var c = this;
         
         c.blockExtraInfo = {
@@ -28,8 +28,15 @@
             "minecraft:end_stone:-1": { icon: '', name: 'End stone' }
         };
         c.configData = null;
-        $http.get('resources/blockValues.json').then(function (data) {
-            c.configData = data.data;
+        $q.all([
+            $http.get('resources/blockValues.json').then(function (data) {
+                c.configData = data.data;
+            }),
+            // initial values based on https://github.com/sinkillerj/ProjectE/blob/master/src/main/java/moze_intel/projecte/emc/mappers/LazyMapper.java
+            $http.get('resources/emcValues.json').then(function (data) {
+                c.emcValues = data.data;
+            })
+        ]).then(function () {
             c.config = [];
             for (var key in c.configData) {
                 c.config.push({ block: key, quantity: 0 });
@@ -44,12 +51,16 @@
             var calcFunc = function (funcName) { return sum(_.map(config, function (i) { return c.calcMod(c.configData[i.block][funcName], i.quantity); })); }
             
             var blocksUsed = sum(_.map(config, function (i) { return i.quantity; }));
+            var emcUsed = sum(_.map(config, function (i) { return (c.emcValues[i.block] || 0) * i.quantity; }));
             var speed = calcFunc('speedFunction');
             var eff = calcFunc('efficiencyFunction');
             var mult = calcFunc('multiplicityFunction') + 1;
             var rfTick = (8 * mult * -1 * speed);
             var tickMod = (1600 + eff) / 1600 / mult;
-            var rfPerCoal = Math.max(0, rfTick) * (1600 * tickMod) / 3;
+            var rfPerCoal = Math.max(0, rfTick) * (1600 * tickMod);
+            var overallEff = rfPerCoal / (8 * 1600);
+            var rfTickPerEMC = emcUsed ? rfTick / emcUsed : 0;
+            var rfCoalPerEMC = emcUsed ? rfPerCoal / emcUsed : 0;
             return {
                 speed: speed,
                 eff: eff,
@@ -57,6 +68,10 @@
                 rfTick: rfTick,
                 tickMod: tickMod,
                 rfPerCoal: rfPerCoal,
+                overallEff: overallEff,
+                emcUsed: emcUsed,
+                rfTickPerEMC: rfTickPerEMC,
+                rfCoalPerEMC: rfCoalPerEMC,
                 blocksUsed: blocksUsed
             };
         };

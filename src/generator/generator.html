@@ -33,11 +33,23 @@
 						<span class="less" ng-if="c.whatIf[l.block].rfTick < c.calcResult.rfTick"><span class="glyphicon glyphicon-minus"></span> 
 							{{ (c.calcResult.rfTick - c.whatIf[l.block].rfTick) | number:0 }} Less RF/tick
 						</span>
+						<span class="more" ng-if="c.whatIf[l.block].rfTickPerEMC > c.calcResult.rfTickPerEMC"><span class="glyphicon glyphicon-plus"></span> 
+							{{ (c.whatIf[l.block].rfTickPerEMC - c.calcResult.rfTickPerEMC) * 1000 | number:0 }} More RF/t/kEMC
+						</span>
+						<span class="less" ng-if="c.whatIf[l.block].rfTickPerEMC < c.calcResult.rfTickPerEMC"><span class="glyphicon glyphicon-minus"></span> 
+							{{ (c.calcResult.rfTickPerEMC - c.whatIf[l.block].rfTickPerEMC) * 1000 | number:0 }} Less RF/t/kEMC
+						</span>
 						<span class="more" ng-if="c.whatIf[l.block].rfPerCoal > c.calcResult.rfPerCoal"><span class="glyphicon glyphicon-plus"></span> 
 							{{ (c.whatIf[l.block].rfPerCoal - c.calcResult.rfPerCoal) | number:0 }} More RF/Coal
 						</span>
 						<span class="less" ng-if="c.whatIf[l.block].rfPerCoal < c.calcResult.rfPerCoal"><span class="glyphicon glyphicon-minus"></span> 
 							{{ (c.calcResult.rfPerCoal - c.whatIf[l.block].rfPerCoal) | number:0 }} Less RF/Coal
+						</span>
+						<span class="more" ng-if="c.whatIf[l.block].rfCoalPerEMC > c.calcResult.rfCoalPerEMC"><span class="glyphicon glyphicon-plus"></span> 
+							{{ (c.whatIf[l.block].rfCoalPerEMC - c.calcResult.rfCoalPerEMC) | number:0 }} More RF/Coal/kEMC
+						</span>
+						<span class="less" ng-if="c.whatIf[l.block].rfCoalPerEMC < c.calcResult.rfCoalPerEMC"><span class="glyphicon glyphicon-minus"></span> 
+							{{ (c.calcResult.rfCoalPerEMC - c.whatIf[l.block].rfCoalPerEMC) | number:0 }} Less RF/Coal/kEMC
 						</span>
 					</td>
 				</tr>
@@ -84,9 +96,33 @@
 				</div>
 			</div>
 			<div class="form-group">
+				<label class="col-md-6 control-label">RF/tick per kEMC</label>
+				<div class="col-md-6">
+					<span class="form-control">{{ c.calcResult.rfTickPerEMC * 1000 | number:2 }}</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-6 control-label">RF/Coal per kEMC</label>
+				<div class="col-md-6">
+					<span class="form-control">{{ c.calcResult.rfCoalPerEMC * 1000 | number:2 }}</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-6 control-label">Overall eff</label>
+				<div class="col-md-6">
+					<span class="form-control">{{ c.calcResult.overallEff * 100 | number:2 }}</span>
+				</div>
+			</div>
+			<div class="form-group">
 				<label class="col-md-6 control-label">Blocks used</label>
 				<div class="col-md-6">
 					<span class="form-control">{{ c.calcResult.blocksUsed }}</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-6 control-label">EMC used</label>
+				<div class="col-md-6">
+					<span class="form-control">{{ c.calcResult.emcUsed | number }}</span>
 				</div>
 			</div>
 			<hr/>
