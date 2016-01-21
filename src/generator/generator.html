@@ -132,6 +132,15 @@
 					<span class="form-control" ng-style="{ color: cb.blocks >= c.calcResult.blocksUsed ? 'green' : 'red', 'font-weight': cb.blocks == c.calcResult.blocksUsed ? 'bold' : 'normal'}">{{cb.blocks}}</span>
 				</div>
 			</div>
+			<hr/>
+			<div class="form-group">
+				<h4>Blocks used</h4>
+				<ul>
+					<li ng-repeat="l in c.config" ng-show="l.quantity">
+						{{ c.blockExtraInfo[l.block] ? c.blockExtraInfo[l.block].name : l.block  }}: {{ l.quantity | number }}
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
 </div>
