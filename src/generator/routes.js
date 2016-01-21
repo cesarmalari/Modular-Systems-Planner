@@ -4,10 +4,11 @@
     angular.module('app').config(['$stateProvider', function($stateProvider) {
         $stateProvider
             .state('generator', {
-                url: '/generator',
+                url: '/generator?config',
                 templateUrl: 'generator/generator.html',
                 controller: 'GeneratorController',
-                controllerAs: 'c'
+                controllerAs: 'c',
+                reloadOnSearch: false
             });
     }])
 })();

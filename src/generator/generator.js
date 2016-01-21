@@ -1,7 +1,7 @@
 (function() {
     'use strict;'
 
-    angular.module('app').controller('GeneratorController', ['$http', '$scope', '$q', function ($http, $scope, $q) {
+    angular.module('app').controller('GeneratorController', ['$http', '$scope', '$q', '$stateParams', '$state', function ($http, $scope, $q, $stateParams, $state) {
         var c = this;
         
         c.blockExtraInfo = {
@@ -37,9 +37,10 @@
                 c.emcValues = data.data;
             })
         ]).then(function () {
+            var stateConfig = JSON.parse(atob($stateParams.config || '') || '{}');
             c.config = [];
             for (var key in c.configData) {
-                c.config.push({ block: key, quantity: 0 });
+                c.config.push({ block: key, quantity: stateConfig[key] || 0 });
             }
         });
         
@@ -81,7 +82,7 @@
         for (var i = 1; i < maxSize; i++) {
             for (var j = 1; j <= i; j++) {
                 for (var k = 1; k <= j; k++) {
-                    allCubes.push({ size: (i + 2) + 'x' + (j + 2) + 'x' + (i + 2), blocks: (i + 2) * (j + 2) * (k + 2) - i * j * k });
+                    allCubes.push({ size: (i + 2) + 'x' + (j + 2) + 'x' + (k + 2), blocks: (i + 2) * (j + 2) * (k + 2) - i * j * k });
                 } 
             } 
         } 
@@ -102,6 +103,15 @@
             
             var targetIx = _.sortedIndex(allCubes, { blocks: c.calcResult.blocksUsed }, 'blocks');
             c.cubes = allCubes.slice(Math.max(0, targetIx - 3), targetIx + 5);
+
+            if(c.config.length) {
+                var stateConfig = {};
+                _.each(c.config, function(i) {
+                    stateConfig[i.block] = i.quantity;
+                });
+                var x = btoa(JSON.stringify(stateConfig));
+                $state.go('.', { config: x }, { location: 'replace', reload: false });
+            }
         }, true);
         
     }]);
