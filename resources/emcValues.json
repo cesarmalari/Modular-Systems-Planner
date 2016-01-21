@@ -1,0 +1,21 @@
+{
+  "minecraft:redstone_block:-1": 576,
+  "minecraft:quartz_block:-1": 1024,
+  "minecraft:gold_block:-1": 18432,
+  "minecraft:diamond_block:-1": 73728,
+  "minecraft:lapis_block:-1": 7776  ,
+  "minecraft:brick_block:-1": 16,
+  "minecraft:stained_hardened_clay:-1": 64,
+  "minecraft:stone:-1": 1,
+  "minecraft:cobblestone:-1": 1,
+  "minecraft:sandstone:-1": 1,
+  "minecraft:iron_block:-1": 2304,
+  "minecraft:mossy_cobblestone:-1": 1,
+  "minecraft:netherrack:-1": 1,
+  "minecraft:emerald_block:-1": 147456,
+  "minecraft:stonebrick:-1": 4,
+  "minecraft:coal_block:-1": 576,
+  "minecraft:obsidian:-1": 64,
+  "minecraft:nether_brick:-1":  1,
+  "minecraft:end_stone:-1": 1
+}
